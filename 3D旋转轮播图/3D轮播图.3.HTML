@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style id="css">
+
+        body,ul,ol{ margin:0;padding:0;}
+        li{ list-style:none;}
+        .box{width:800px; margin:50px auto;}
+        #picList{ width:800px;height:360px;perspective:800px; }
+        #picList li{ width:25px; height:360px; float:left; position:relative;transform-style:preserve-3d;transform:translateZ(-180px) rotate(0deg);}
+        #picList li a{ width:25px;height:360px; position:absolute;left:0;top:0;}
+        #picList li a:nth-of-type(1){ background:url(img/1.jpg); transform:translateZ(180px);}
+        #picList li a:nth-of-type(2){ background:url(img/2.jpg); transform-origin:top;transform:translateZ(-180px) rotateX(90deg);}
+        #picList li a:nth-of-type(3){ background:url(img/3.jpg); transform:translateZ(-180px) rotateX(180deg);}
+        #picList li a:nth-of-type(4){ background:url(img/4.jpg); transform-origin:bottom; transform:translateZ(-180px) rotateX(-90deg);}
+        #picList span{ width:360px;height:360px; background:#ccc; position:absolute;top:0;}
+        #picList li span:nth-of-type(1){ left:0; transform-origin:left; transform: translateZ(180px) rotateY(90deg);}
+        #picList li span:nth-of-type(2){ right:0; transform-origin:right; transform: translateZ(180px) rotateY(-90deg);}
+        #btns{ padding:30px; height:30px;}
+        #btns li{ width:30px;height:30px; background:#000; border-radius:50%; font-size:16px; color:#fff; margin:0 10px; float:left; text-align:center; line-height:30px;}
+        #btns .active{ background:#f60; font-weight:bold;}
+    </style>
+    <script>
+        window.onload = function () {
+            var oPicList=document.getElementById("picList");
+            var aPics=oPicList.getElementsByTagName('li');
+            var oBtn=document.getElementById("btns");
+            var aBtns=oBtn.getElementsByTagName('li');
+            var oCss=document.getElementById("css");
+            var iLiW=25;
+            var iLilength=oPicList.clientWidth/iLiW;
+            var sHtml="";
+            var iZindex=0;
+            var sStyle="";
+            var iNow = 0;
+            for(let i=0;i<iLilength;i++)
+            {
+                i>iLilength/2?iZindex--:iZindex++;
+                sStyle+=`#picList li:nth-of-type(${i+1}){z-index:${iZindex}} /*看效果中间之前的层级被依次覆盖*/
+                         #picList li:nth-of-type(${i+1}) a{background-position:${-i*iLiW}px 0px}/*背景图片沿着X轴偏移*/
+                       `
+                sHtml+=`<li>
+                            <a href="#"></a>
+                            <a href="#"></a>
+                            <a href="#"></a>
+                            <a href="#"></a>
+                            <span></span>
+                            <span></span>
+                       </li>`
+            }
+            oPicList.innerHTML=sHtml;
+            oCss.innerHTML+=sStyle;
+            for(let i = 0; i < aBtns.length ; i++) {
+                aBtns[i].onclick = function () {
+                    for(var k  = 0 ; k < aBtns.length ; k++){
+                        aBtns[k].className = ''
+                    }
+                    for(let j = 0; j < aPics.length ; j++) {
+                        aPics[j].style.transform = 'translateZ(-180px) rotateX(-'+i*90+'deg)'
+                        aPics[j].style.transition = `${0.5*(Math.abs(iNow-i))}s ${j*50}ms all ease-in-out`/**添加动画 前一个时间调节过度时间 后一个调节延迟时间*/
+                    }
+                    iNow = i;
+                    aBtns[iNow].className = 'active';
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="box">
+    <ul id="picList">
+
+    </ul>
+    <ol id="btns">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ol>
+</div>
+</body>
+</html>

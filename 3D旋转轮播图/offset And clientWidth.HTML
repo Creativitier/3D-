@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function() {
+          var div1 = document.getElementById('div1')
+          console.log(div1.clientWidth)
+          console.log(div1.offsetWidth)
+          console.log(parseInt(window.getComputedStyle(div1, null).getPropertyValue("width")))
+        }
+    </script>
+</head>
+<body>
+  <div id="div1" style="width: 20px;height: 20px; border: 1px solid red;padding: 5px;"></div>
+</body>
+</html>
